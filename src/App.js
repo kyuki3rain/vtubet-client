@@ -12,11 +12,6 @@ import Dashboard from './components/Dashboard'
 export default function App() {
   const [state, dispatch] = useReducer(myReducer, initialState);
   
-  useEffect(() => {
-    checkLoginStatus()
-  },[])
-
-  // 追加
   const checkLoginStatus = () => {
     axios.get(api("logged_in"), { withCredentials: true })
       .then(response => {
@@ -32,6 +27,12 @@ export default function App() {
       console.log("ログインエラー", error)
     })
   }
+
+  useEffect(() => {
+    checkLoginStatus()
+  },[])
+
+  // 追加
 
   return (
     <div>

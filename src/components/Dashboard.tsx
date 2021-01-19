@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Context } from '../context';
 
 export default function Dashboard() {
-    const { state, dispatch } = useContext(Context);
+    const { state } = useContext(Context);
 
     return (
         <div>
