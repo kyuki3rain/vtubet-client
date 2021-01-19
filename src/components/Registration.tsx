@@ -28,7 +28,6 @@ export default function Registration() {
           dispatch({type: 'setUser', user: {email, password}})
           history.push('/dashboard')
         }
-        console.log("registration res", response)
       }).catch(error => {
         console.log("registration error", error)
       })
