@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext } from 'react'
+import api from '../api';
 import { Context } from '../context';
 import { User } from '../reducer';
 import Login from './Login';
@@ -9,7 +10,7 @@ export default function Home() {
     const { state, dispatch } = useContext(Context);
 
     const logout = () => {
-        axios.delete("http://localhost:3001/logout", { withCredentials: true })
+        axios.delete(api("logout"), { withCredentials: true })
         .then(response => {
             if(response.data.logged_out){
                 dispatch({type: 'logOut'})

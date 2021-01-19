@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { Context } from '../context';
 import { useHistory } from 'react-router-dom';
+import api from '../api';
 
 export default function Login() {
     const { state, dispatch } = useContext(Context);
@@ -11,7 +12,7 @@ export default function Login() {
     const [password, setPassword] = useState(state.user.password)
     
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      axios.post("http://localhost:3001/login",
+      axios.post(api("login"),
         {
           email: email,
           password: password

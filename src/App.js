@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import { myReducer, initialState } from './reducer'
 import { Context } from './context'
+import api from './api'
 
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
@@ -17,7 +18,7 @@ export default function App() {
 
   // 追加
   const checkLoginStatus = () => {
-    axios.get("http://localhost:3001/logged_in", { withCredentials: true })
+    axios.get(api("logged_in"), { withCredentials: true })
       .then(response => {
         if (response.data.logged_in && !state.loggedInStatus) {
           dispatch({type: 'logIn'})
@@ -31,7 +32,7 @@ export default function App() {
       console.log("ログインエラー", error)
     })
   }
-  
+
   return (
     <div>
       <Context.Provider value={{ state, dispatch }}>
