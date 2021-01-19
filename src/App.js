@@ -30,6 +30,7 @@ export default function App() {
 
   useEffect(() => {
     checkLoginStatus()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   // 追加
