@@ -3,8 +3,8 @@ import React, { useContext } from 'react'
 import api from '../api';
 import { Context } from '../context';
 import { User } from '../reducer';
-import Login from './Login';
-import Registration from './Registration'
+import Login from '../components/Login';
+import Registration from '../components/Registration'
 
 export default function Home() {
     const { state, dispatch } = useContext(Context);
@@ -15,6 +15,10 @@ export default function Home() {
             if(response.data.logged_out){
                 dispatch({type: 'logOut'})
                 dispatch({type: 'setUser', user: {} as User})
+            }
+            else{
+                console.log(response.data);
+                alert(response.data.errors.join("\n"));
             }
         }).catch(error => console.log("ログアウトエラー", error))
     }

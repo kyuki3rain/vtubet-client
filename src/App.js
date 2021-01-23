@@ -6,8 +6,12 @@ import { myReducer, initialState } from './reducer'
 import { Context } from './context'
 import api from './api'
 
-import Home from './components/Home'
-import Dashboard from './components/Dashboard'
+import GlobalStyle from './helper/baseStyle'
+import ContestPage from './pages/ContestPage'
+import Home from './pages/Home'
+import RegisterPage from './pages/RegisterPage'
+import UserPage from './pages/UserPage'
+import LoginPage from './pages/LoginPage'
 
 export default function App() {
   const [state, dispatch] = useReducer(myReducer, initialState);
@@ -37,11 +41,15 @@ export default function App() {
 
   return (
     <div>
+      <GlobalStyle/>
       <Context.Provider value={{ state, dispatch }}>
         <BrowserRouter>
           <Switch>
             <Route exact path={"/"} component={Home} />
-            <Route exact path={"/dashboard"} component={Dashboard} />
+            <Route exact path={"/register"} component={RegisterPage} />
+            <Route exact path={"/login"} component={LoginPage} />
+            <Route exact path={"/contest/:id"} component={ContestPage} />
+            <Route exact path={"/mypage"} component={UserPage} />
           </Switch>
         </BrowserRouter>
       </Context.Provider>

@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
 import { Context } from '../context';
+import GenericTemplate from '../templates/GenericTemplate';
+import Registration from './Registration';
 
 export default function Dashboard() {
     const { state } = useContext(Context);
 
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <h2>ログイン状態: {state.loggedInStatus? 'ログイン済み' : '未ログイン'}</h2>
-        </div>
+        <GenericTemplate title="トップページ">
+            <Registration></Registration>
+        </GenericTemplate>
     )
 }

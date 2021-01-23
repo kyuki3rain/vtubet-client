@@ -3,6 +3,17 @@ import React, { useContext, useState } from 'react'
 import { Context } from '../context';
 import { useHistory } from 'react-router-dom';
 import api from '../api';
+import styled from 'styled-components';
+import TextArea from './TextArea';
+import Button from './Button';
+
+const FormWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 30px;
+`;
 
 export default function Registration() {
     const { state, dispatch } = useContext(Context);
@@ -26,7 +37,11 @@ export default function Registration() {
         if (response.data.created) {
           dispatch({type: 'logIn'})
           dispatch({type: 'setUser', user: {email, password}})
-          history.push('/dashboard')
+          history.push('/')
+        }
+        else{
+          console.log(response.data);
+          alert(response.data.errors.join("\n"));
         }
       }).catch(error => {
         console.log("registration error", error)
@@ -36,33 +51,32 @@ export default function Registration() {
 
     return (
       <div>
-      <p>新規登録</p>
-
-       <form onSubmit={handleSubmit}>
-        <input
-            type="email"
-            name="email"
-            placeholder="メールアドレス"
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="パスワード"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
-          <input
-            type="password"
-            name="password_confirmation"
-            placeholder="確認用パスワード"
-            value={passwordConfirmation}
-            onChange={event => setPasswordConfirmation(event.target.value)}
-          />
-
-           <button type="submit">登録</button>
-       </form>
-   </div>
+        <form onSubmit={handleSubmit}>
+          <FormWrapper>
+            <TextArea
+              type="email"
+              name="email"
+              placeholder="メールアドレス"
+              value={email}
+              setValue={setEmail}
+            />
+            <TextArea
+              type="password"
+              name="password"
+              placeholder="パスワード"
+              value={password}
+              setValue={setPassword}
+            />
+            <TextArea
+              type="password"
+              name="passwordConfirmation"
+              placeholder="確認用パスワード"
+              value={passwordConfirmation}
+              setValue={setPasswordConfirmation}
+            />
+            <Button type="submit">登録</Button>
+          </FormWrapper>
+        </form>
+      </div>
     )
 }
