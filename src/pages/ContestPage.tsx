@@ -42,6 +42,7 @@ export default function ContestPage() {
     
     useEffect(()=>{
         get_contest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     
     return (
