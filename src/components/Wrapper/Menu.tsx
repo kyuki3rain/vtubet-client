@@ -2,11 +2,10 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import api from '../api';
-import { Context } from '../context';
-import media from '../helper/media';
-import { User } from '../reducer';
-import { Link } from './Link';
+import api from '../../api';
+import { Context } from '../../context';
+import { User } from '../../reducer';
+import { Link } from '../Basic/Link';
 
 const MenuWrapper = styled.div`
   flex-direction: row;
@@ -14,13 +13,6 @@ const MenuWrapper = styled.div`
   div {
     margin-left: 20px;
   }
-  /* PC */
-  ${media.pc`
-  `}
-
-  /* Smartphones */
-  ${media.sp`
-  `}
 `;
 
 export default function Menu() {

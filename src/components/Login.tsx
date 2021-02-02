@@ -4,8 +4,8 @@ import { Context } from '../context';
 import { useHistory } from 'react-router-dom';
 import api from '../api';
 import styled from 'styled-components';
-import TextArea from './TextArea';
-import Button from './Button';
+import TextArea from './Basic/TextArea';
+import Button from './Basic/Button';
 
 const FormWrapper = styled.div`
   display: flex;

@@ -1,27 +1,24 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
-import List from '@material-ui/core/List';
 
+import Wrapper from '../components/Wrapper/Wrapper';
+import Text from '../components/Basic/Text';
+import ContestTab from '../components/ContestPage/ContestTab';
+import { BetType } from '../types/bet_type';
+import axios from 'axios';
 import api from '../api';
-import Header from '../components/Header'
-import BetListItem from '../components/BetListItem'
 
-type Chance = {
+export type Chance = {
     id: number;
-    bet_type: string;
     rate: number;
+    member_names: Array<string>;
     is_bet: boolean;
-}
-
-type Member = {
-    name: string;
-    chances: Array<Chance>;
-}
-
-type Contest = {
+  }
+  
+export type Contest = {
     title: string;
-    members: Array<Member>;
+    members: Array<string>;
+    chances: { [key in BetType]: Array<Chance>; }
 }
 
 type Params = {
@@ -39,26 +36,21 @@ export default function ContestPage() {
             setContest(response.data);
         }).catch(error => console.log("更新失敗", error))
     }
-    
+
     useEffect(()=>{
         get_contest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
-    
+
     return (
-        <div>
-            <Header></Header>
-            <div>{contest.title}</div>
-            <List>
-              {contest.members?.map((member) =>{
-                  return(
-                    <BetListItem
-                        member={member}
-                        get_contest={get_contest}
-                    ></BetListItem>
-                  )
-                })}
-            </List>
-        </div>
+        <Wrapper>
+            <Text variant="h4" color="black">
+                {contest.title}
+            </Text>
+            <ContestTab
+                contest={contest}
+                get_contest={get_contest}
+            ></ContestTab>
+        </Wrapper>
     )
 }

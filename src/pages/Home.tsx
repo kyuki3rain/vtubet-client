@@ -5,8 +5,10 @@ import api from '../api';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Header from '../components/Header';
+import Wrapper from '../components/Wrapper/Wrapper';
+import Text from '../components/Basic/Text';
 
 type Member = {
     name: string;
@@ -34,8 +36,11 @@ export default function Home() {
     },[])
 
     return (
-        <div>
-            <Header></Header>
+        <Wrapper>
+            <Text variant="h4" color="black">
+                コンテスト一覧
+            </Text>
+            <CssBaseline />
             <List>
               {contests.map((contest) =>{
                   return(
@@ -51,6 +56,6 @@ export default function Home() {
                   )
                 })}
             </List>
-        </div>
+        </Wrapper>
     )
 }

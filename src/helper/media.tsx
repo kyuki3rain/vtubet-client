@@ -22,8 +22,11 @@ type GeneratorFunction<Props, Theme> = (
 ) => any;
 
 const rules: { [v: string]: GeneratorFunction<unknown, any> } = {
-  pc: (...args) => media.greaterThan('medium')(...args),
-  sp: (...args) => media.lessThan('medium')(...args),
+  gm: (...args) => media.greaterThan('medium')(...args),
+  lm: (...args) => media.lessThan('medium')(...args),
+  sm: (...args) => media.between('small', 'medium')(...args),
+  gs: (...args) => media.greaterThan('small')(...args),
+  ls: (...args) => media.lessThan('small')(...args)
 };
 
 export default rules;

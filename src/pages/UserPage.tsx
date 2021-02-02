@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 
-import Header from '../components/Header';
+import Header from '../components/Wrapper/Header';
 import api from '../api';
 
 type Bet = {
@@ -16,9 +16,7 @@ type Bet = {
     chance: {
         rate: number;
         bet_type: string;
-        member: {
-            name: string;
-        }
+        member_names: Array<string>;
         contest: {
             id: number;
             title: string;
@@ -67,7 +65,7 @@ export default function Home() {
                             }}
                         />
                         <ListItemText
-                            primary={bet.chance.member.name}
+                            primary={bet.chance.member_names.join(",")}
                             onClick={()=>{
                                 history.push(`/contest/${bet.chance.contest.id}`);
                             }}
@@ -77,9 +75,6 @@ export default function Home() {
                         />
                         <ListItemText
                             primary={bet.point}
-                        />
-                        <ListItemText
-                            primary={bet.status}
                         />
                         {
                         bet.status === "draft" &&
