@@ -47,7 +47,7 @@ export default function Home() {
                     <ListItem key={contest.id}>
                         <ListItemText
                             primary={contest.title}
-                            secondary={contest.members?.slice(0, 3).map(t=>t.name).join("、")+"など"}
+                            secondary={contest.members?.slice(0, 3).map(t=>t.name).join("、")+"など参加"}
                             onClick={()=>{
                                 history.push(`/contest/${contest.id}`);
                             }}

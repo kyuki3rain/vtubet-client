@@ -6,8 +6,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 
-import Header from '../components/Wrapper/Header';
 import api from '../api';
+import Wrapper from '../components/Wrapper/Wrapper';
 
 type Bet = {
     id: number;
@@ -52,8 +52,7 @@ export default function Home() {
     }, [])
 
     return (
-        <div>
-            <Header></Header>
+        <Wrapper>
             <List>
               {bets.map((bet) => {
                   return(
@@ -65,13 +64,16 @@ export default function Home() {
                             }}
                         />
                         <ListItemText
-                            primary={bet.chance.member_names.join(",")}
+                            primary={bet.chance.bet_type}
                             onClick={()=>{
                                 history.push(`/contest/${bet.chance.contest.id}`);
                             }}
                         />
                         <ListItemText
-                            primary={bet.chance.bet_type}
+                            primary={bet.chance.member_names.join(",")}
+                            onClick={()=>{
+                                history.push(`/contest/${bet.chance.contest.id}`);
+                            }}
                         />
                         <ListItemText
                             primary={bet.point}
@@ -99,6 +101,6 @@ export default function Home() {
                   )
                 })}
             </List>
-        </div>
+        </Wrapper>
     )
 }

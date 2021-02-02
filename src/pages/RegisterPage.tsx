@@ -1,12 +1,11 @@
 import React from 'react';
 import Registration from '../components/Registration';
-import Header from '../components/Wrapper/Header';
+import Wrapper from '../components/Wrapper/Wrapper';
 
 export default function RegisterPage() {
     return (
-        <div>
-            <Header></Header>
+        <Wrapper>
             <Registration  />
-        </div>
+        </Wrapper>
     )
 }

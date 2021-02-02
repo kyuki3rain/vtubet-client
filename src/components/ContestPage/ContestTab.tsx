@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import TabPanel from '../Basic/TabPanel';
 import ParticipationList from './ParticipationList';
 import { Contest } from '../../pages/ContestPage';
-import { bet_type_index } from '../../types/bet_type';
+import { bet_type, bet_type_index, BET_TYPE_JA } from '../../types/bet_type';
 import ParticipationsSelect from './ParticipationsSelect';
 
 type Props = {
@@ -45,66 +45,38 @@ const ContestTab: React.FC<Props> = ({contest, get_contest}) => {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="単勝" />
-          <Tab label="複勝" />
-          <Tab label="馬単" />
-          <Tab label="馬連" />
-          <Tab label="ワイド" />
-          <Tab label="三連単" />
-          <Tab label="三連複" />
+          {BET_TYPE_JA.map((ja) => {
+            return <Tab label={ja} />;
+          })}
         </Tabs>
       </Paper>
       <SwipeableViews
         index={value}
         onChangeIndex={handleChangeIndex}
       >
-        <TabPanel value={value} index={bet_type_index("win")}>
-          <ParticipationList
-            chances={contest.chances["win"]}
-            get_contest={get_contest}
-          ></ParticipationList>
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("place")}>
-          <ParticipationList
-            chances={contest.chances["place"]}
-            get_contest={get_contest}
-          ></ParticipationList>
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("exacta")}>
-          <ParticipationsSelect
-            chances={contest.chances["exacta"]}
-            members={contest.members}
-            get_contest={get_contest}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("quinella")}>
-          <ParticipationsSelect
-            chances={contest.chances["quinella"]}
-            members={contest.members}
-            get_contest={get_contest}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("quinella_place")}>
-          <ParticipationsSelect
-            chances={contest.chances["quinella_place"]}
-            members={contest.members}
-            get_contest={get_contest}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("tierce")}>
-          <ParticipationsSelect
-            chances={contest.chances["tierce"]}
-            members={contest.members}
-            get_contest={get_contest}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={bet_type_index("trio")}>
-          <ParticipationsSelect
-            chances={contest.chances["trio"]}
-            members={contest.members}
-            get_contest={get_contest}
-          />
-        </TabPanel>
+        {bet_type.map((b) => {
+          if(["win", "place"].includes(b)){
+            return (
+              <TabPanel value={value} index={bet_type_index(b)}>
+                <ParticipationList
+                  chances={contest.chances[b]}
+                  get_contest={get_contest}
+                />
+              </TabPanel>
+            )
+          }
+          else{
+            return (
+              <TabPanel value={value} index={bet_type_index(b)}>
+                <ParticipationsSelect
+                  chances={contest.chances[b]}
+                  members={contest.members}
+                  get_contest={get_contest}
+                />
+              </TabPanel>
+            )
+          }
+        })}
       </SwipeableViews>
     </>
   );
