@@ -4,21 +4,13 @@ import { useParams } from "react-router-dom";
 import Wrapper from '../components/Wrapper/Wrapper';
 import Text from '../components/Basic/Text';
 import ContestTab from '../components/ContestPage/ContestTab';
-import { BetType } from '../types/bet_type';
+import { BetType } from '../helper/bet_type';
 import axios from 'axios';
-import api from '../api';
+import api from '../helper/api';
 
-export type Chance = {
-    id: number;
-    rate: number;
-    member_names: Array<string>;
-    is_bet: boolean;
-  }
-  
 export type Contest = {
     title: string;
-    members: Array<string>;
-    chances: { [key in BetType]: Array<Chance>; }
+    member_names: Array<string>;
 }
 
 type Params = {
@@ -47,10 +39,7 @@ export default function ContestPage() {
             <Text variant="h4" color="black">
                 {contest.title}
             </Text>
-            <ContestTab
-                contest={contest}
-                get_contest={get_contest}
-            ></ContestTab>
+            <ContestTab contest_id={Number(id)} member_names={contest.member_names} />
         </Wrapper>
     )
 }

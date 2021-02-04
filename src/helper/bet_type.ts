@@ -19,3 +19,17 @@ export const bet_type = Object.values(BET_TYPE);
 export const bet_type_index = (a: BetType): number => {
   return bet_type.findIndex(item => item === a)
 };
+
+export const bet_type_length = (a: BetType): number => {
+  if(a === "win" || a === "place"){
+    return 1;
+  }
+  if(a === "exacta" || a === "quinella" || a === "quinella_place"){
+    return 2;
+  }
+  if(a === "tierce" || a === "trio"){
+    return 3;
+  }
+
+  return 0;
+}

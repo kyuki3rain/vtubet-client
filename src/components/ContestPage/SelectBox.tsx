@@ -4,11 +4,12 @@ import Select from '@material-ui/core/Select';
 
 type Props = {
   value: number;
-  members: Array<string>;
+  member_names: Array<string>;
   handleChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
+  check_duplicate: (index: number) => boolean;
 }
 
-const SelectBox: React.FC<Props> = ({value, members, handleChange}) => {
+const SelectBox: React.FC<Props> = ({value, member_names, handleChange, check_duplicate}) => {
     return (
       <Select
         labelId="demo-simple-select-label"
@@ -20,9 +21,10 @@ const SelectBox: React.FC<Props> = ({value, members, handleChange}) => {
         }}
       >
         {
-          members.map((member, index) => {
+          member_names.map((name, index) => {
+            if(check_duplicate(index)) return;
             return (
-              <MenuItem value={index}>{member}</MenuItem>
+              <MenuItem value={index}>{name}</MenuItem>
             );
           })
         }

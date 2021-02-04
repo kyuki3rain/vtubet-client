@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,17 +7,16 @@ import Paper from '@material-ui/core/Paper';
 
 import TabPanel from '../Basic/TabPanel';
 import ParticipationList from './ParticipationList';
-import { Contest } from '../../pages/ContestPage';
-import { bet_type, bet_type_index, BET_TYPE_JA } from '../../types/bet_type';
+import { bet_type, bet_type_index, BET_TYPE_JA } from '../../helper/bet_type';
 import ParticipationsSelect from './ParticipationsSelect';
 
 type Props = {
-  contest: Contest;
-  get_contest: () => void;
+  contest_id: number;
+  member_names: Array<string>;
 }
 
-const ContestTab: React.FC<Props> = ({contest, get_contest}) => {
-  const [value, setValue] = React.useState(0);
+const ContestTab: React.FC<Props> = ({contest_id, member_names}) => {
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -26,13 +25,6 @@ const ContestTab: React.FC<Props> = ({contest, get_contest}) => {
   const handleChangeIndex = (index: number) => {
     setValue(index);
   };
-
-  if(!contest.chances){
-    return (
-      <div>
-      </div>
-    )
-  }
 
   return (
     <>
@@ -59,8 +51,8 @@ const ContestTab: React.FC<Props> = ({contest, get_contest}) => {
             return (
               <TabPanel value={value} index={bet_type_index(b)}>
                 <ParticipationList
-                  chances={contest.chances[b]}
-                  get_contest={get_contest}
+                  contest_id={contest_id}
+                  bet_type={b}
                 />
               </TabPanel>
             )
@@ -69,9 +61,9 @@ const ContestTab: React.FC<Props> = ({contest, get_contest}) => {
             return (
               <TabPanel value={value} index={bet_type_index(b)}>
                 <ParticipationsSelect
-                  chances={contest.chances[b]}
-                  members={contest.members}
-                  get_contest={get_contest}
+                  contest_id={contest_id}
+                  member_names={member_names}
+                  bet_type={b}
                 />
               </TabPanel>
             )

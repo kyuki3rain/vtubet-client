@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 
-import api from '../api';
+import api from '../helper/api';
 import Wrapper from '../components/Wrapper/Wrapper';
 
 type Bet = {

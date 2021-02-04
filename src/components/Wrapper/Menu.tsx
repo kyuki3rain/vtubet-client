@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import api from '../../api';
+import api from '../../helper/api';
 import { Context } from '../../context';
 import { User } from '../../reducer';
 import { Link } from '../Basic/Link';

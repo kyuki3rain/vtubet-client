@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { Context } from '../context';
 import { useHistory } from 'react-router-dom';
-import api from '../api';
+import api from '../helper/api';
 import styled from 'styled-components';
 import TextArea from './Basic/TextArea';
 import Button from './Basic/Button';

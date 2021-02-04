@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
 import Counter from '../Basic/Counter';
-import api from '../../api';
+import api from '../../helper/api';
 import SelectBox from './SelectBox';
 import Text from '../Basic/Text';
 import styled from 'styled-components';
+import { BetType, bet_type_length } from '../../helper/bet_type';
+import { Chance } from '../../helper/chances';
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,22 +18,20 @@ const Wrapper = styled.div`
   padding: 16px;
 `;
 
-type Chance = {
-  id: number;
-  rate: number;
-  member_names: Array<string>;
-  is_bet: boolean;
-}
-
 type Props = {
-  chances: Array<Chance>;
-  members: Array<string>;
-  get_contest: () => void;
+  contest_id: number;
+  member_names: Array<string>;
+  bet_type: BetType;
 }
 
 const get_chance = (chances: Array<Chance>, selectMemberNames: Array<string>) => {
   for (const chance of chances){
-    if(chance.member_names.every((name) => {
+    if(chance.has_order){
+      if(selectMemberNames.toString() === chance.member_names.toString()){
+        return chance;
+      }
+    }
+    else if(chance.member_names.every((name) => {
       return selectMemberNames.includes(name)
     })){
       return chance;
@@ -40,22 +40,48 @@ const get_chance = (chances: Array<Chance>, selectMemberNames: Array<string>) =>
   return null;
 }
 
-const ParticipationsSelect: React.FC<Props> = ({chances, members, get_contest}) => {
-  const length = chances[0].member_names.length;
+const ParticipationsSelect: React.FC<Props> = ({contest_id, member_names, bet_type}) => {
+  const length = bet_type_length(bet_type);
   const [point, setPoint] = useState(0);
+  const [chances, setChances] = useState([] as Array<Chance>);
   const [selectMembers, setSelectMembers] = useState(Array.from(new Array(length)).map((v,i) => i));
-  const selectMemberNames = selectMembers.map((s) => { return members[s] });
+  const selectMemberNames = selectMembers.map((s) => { return member_names[s] });
   const chance = get_chance(chances, selectMemberNames);
 
+  const get_chances = () => {
+    axios.get(api("contests/" + contest_id + "/chances"), {
+    params: {
+      bet_type: bet_type
+    },
+    withCredentials: true })
+    .then(response => {
+        console.log(response.data);
+        setChances(response.data);
+    }).catch(error => console.log("更新失敗", error))
+  }
+
+  useEffect(()=>{
+    get_chances();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  
   const create_bet = (chance: Chance) => {
     axios.post(api("chances/" + chance.id + "/bets/"), {
-        bet: {
-          point: point
-        }
+      bet: {
+        point: point
+      }
     }, { withCredentials: true })
     .then(response => {
-      get_contest();
+      get_chances();
     }).catch(error => console.log("更新失敗", error));
+  }
+  
+  if(!chances){
+    return (
+      <div>
+      </div>
+    )
   }
 
   if(length !== 2 && length !== 3){
@@ -70,20 +96,28 @@ const ParticipationsSelect: React.FC<Props> = ({chances, members, get_contest}) 
     <>
       <Wrapper>
         {
-          chances[0].member_names.map((name, i) => {
+          new Array(length).fill("").map((_, i) => {
+            const check_duplicate = (index: number): boolean => {
+              let arr = selectMembers.slice();
+              arr.splice(i, 1);
+              console.log(arr);
+              return arr.includes(index);
+            }
+
             return (
               <SelectBox
                 key={i}
                 value={selectMembers[i]}
-                members={members}
+                member_names={member_names}
                 handleChange={(event) => {
                   const newMember = event.target.value as number;
-                  if(!selectMembers.includes(newMember)){
+                  if(!check_duplicate(newMember)){
                     let newMembers = selectMembers.slice();
                     newMembers[i] = newMember;
                     setSelectMembers(newMembers);
                   }
                 }}
+                check_duplicate={check_duplicate}
               />
             )
           })

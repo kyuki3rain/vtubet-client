@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext } from 'react'
-import api from '../api';
+import api from '../helper/api';
 import { Context } from '../context';
 import { User } from '../reducer';
 import Login from '../components/Login';

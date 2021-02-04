@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import { myReducer, initialState } from './reducer'
 import { Context } from './context'
-import api from './api'
+import api from './helper/api'
 
 import GlobalStyle from './helper/baseStyle'
 import ContestPage from './pages/ContestPage'
