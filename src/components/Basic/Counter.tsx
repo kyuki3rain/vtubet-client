@@ -6,6 +6,7 @@ import styled from 'styled-components';
 type Props = {
   point: number;
   setPoint: React.Dispatch<React.SetStateAction<number>>;
+  disabled?: boolean;
 }
 
 const Wrapper = styled.div`
@@ -18,14 +19,18 @@ const Point = styled(Button)`
   pointer-events: none;
 `;
 
-const Counter: React.FC<Props> = ({point, setPoint}) => {    
+const Counter: React.FC<Props> = ({point, setPoint, disabled = false}) => {    
     return(
       <Wrapper>
         <ButtonGroup size="small" aria-label="small outlined button group">
           <Button onClick={() => {if(point <
-              10000){setPoint(point + 100)}}}>+</Button>
-          <Point>{point}</Point>
-          <Button onClick={() => {if(point >= 100){setPoint(point - 100)}}}>-</Button>
+              10000){setPoint(point + 100)}}}
+              disabled={disabled}
+              >+</Button>
+          <Point disabled={disabled}>{point}</Point>
+          <Button onClick={() => {if(point >= 100){setPoint(point - 100)}}}
+            disabled={disabled}
+          >-</Button>
         </ButtonGroup>
       </Wrapper>
     )

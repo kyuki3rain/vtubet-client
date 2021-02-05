@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import api from '../helper/api';
 import Wrapper from '../components/Wrapper/Wrapper';
+import Text from '../components/Basic/Text';
 
 type Bet = {
     id: number;
@@ -24,9 +25,21 @@ type Bet = {
     }
 }
 
+type User = {
+    point: number;
+}
+
 export default function Home() {
+    const [user, setUser] = useState({} as User);
     const [ bets, setBets ] = useState([] as Array<Bet>);
     const history = useHistory();
+
+    const get_user = () => {
+        axios.get(api("user"), { withCredentials: true })
+        .then(response => {
+            setUser(response.data);
+        }).catch(error => console.log("更新失敗", error))
+    }
 
     const get_bets = () => {
         axios.get(api("bets"), { withCredentials: true })
@@ -48,11 +61,13 @@ export default function Home() {
     }
 
     useEffect(() => {
+        get_user();
         get_bets();
     }, [])
 
     return (
         <Wrapper>
+            <Text variant="body1">所持ポイント：{user.point}pt</Text>
             <List>
               {bets.map((bet) => {
                   return(

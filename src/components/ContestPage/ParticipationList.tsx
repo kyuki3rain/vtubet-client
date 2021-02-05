@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
-import Counter from '../Basic/Counter';
 import api from '../../helper/api';
 import { BetType } from '../../helper/bet_type';
 import { Chance } from '../../helper/chances';
+import ParticipationListItem from './ParticipationListItem';
 
 type Props = {
   contest_id: number;
@@ -17,7 +15,6 @@ type Props = {
 
 const ParticipationList: React.FC<Props> = ({contest_id, bet_type}) => {
   const [chances, setChances] = useState([] as Array<Chance>)
-  const [point, setPoint] = useState(0);
 
   const get_chances = () => {
     axios.get(api("contests/" + contest_id + "/chances"), {
@@ -32,7 +29,7 @@ const ParticipationList: React.FC<Props> = ({contest_id, bet_type}) => {
     }).catch(error => console.log("更新失敗", error))
   }
 
-  const create_bet = (chance: Chance) => {
+  const create_bet = (chance: Chance, point: number) => {
     axios.post(api("chances/" + chance.id + "/bets/"), {
         bet: {
           point: point
@@ -60,20 +57,7 @@ const ParticipationList: React.FC<Props> = ({contest_id, bet_type}) => {
     {
       chances.map((chance) => {
         return(
-          <ListItem key={chance.id}>
-          <ListItemText primary={chance.id} />
-          <ListItemText primary={"倍率：" + (chance.rate || "*")} />
-          <Counter point={point} setPoint={setPoint}></Counter>
-          <Button 
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => { create_bet(chance) }}
-              disabled={chance.is_bet}
-          >
-              賭ける
-          </Button>
-      </ListItem>
+          <ParticipationListItem chance={chance} create_bet={create_bet} />
         );
       })
     }
