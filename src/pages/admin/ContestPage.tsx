@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Wrapper from '../components/Wrapper/Wrapper';
-import Text from '../components/Basic/Text';
-import ContestTab from '../components/ContestPage/ContestTab';
-import { BetType } from '../helper/bet_type';
+import Wrapper from '../../components/Wrapper/Wrapper';
+import Text from '../../components/Basic/Text';
 import axios from 'axios';
-import api from '../helper/api';
+import api from '../../helper/api';
 
 export type Contest = {
   title: string;
@@ -41,7 +39,6 @@ export default function ContestPage() {
       <Text variant="h4" color="black">
         {contest.title}
       </Text>
-      <ContestTab contest_id={Number(id)} member_names={contest.member_names} />
     </Wrapper>
   );
 }

@@ -7,7 +7,11 @@ import { Context } from './context'
 import api from './helper/api'
 
 import GlobalStyle from './helper/baseStyle'
+import AdminRoute from './helper/AdminRoute'
 import ContestPage from './pages/ContestPage'
+import AdminCOntestPage from "./pages/admin/ContestPage"
+import ContestCreatePage from "./pages/admin/ContestCreatePage"
+import AdminHome from "./pages/admin/Home"
 import Home from './pages/Home'
 import RegisterPage from './pages/RegisterPage'
 import UserPage from './pages/UserPage'
@@ -38,6 +42,7 @@ export default function App() {
   },[])
 
   // 追加
+  console.log(state.user)
 
   return (
     <div>
@@ -50,6 +55,9 @@ export default function App() {
             <Route exact path={"/login"} component={LoginPage} />
             <Route exact path={"/contest/:id"} component={ContestPage} />
             <Route exact path={"/mypage"} component={UserPage} />
+            <AdminRoute path={"/admin"} component={AdminHome} />
+            <AdminRoute path={"/admin/contest/create"} component={ContestCreatePage} />
+            <AdminRoute path={"/admin/contest/:id"} component={AdminCOntestPage} />
           </Switch>
         </BrowserRouter>
       </Context.Provider>

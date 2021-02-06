@@ -1,6 +1,7 @@
 export type User = {
   email: string;
   password: string;
+  authority: string;
 }
 
 export type StateType = {
@@ -24,7 +25,7 @@ export const initialState = {
 export const myReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case 'setUser':
-    return { ...state, user: action.user };
+    return { ...state, user: {...state.user, ...action.user} };
     case 'logIn':
     return { ...state, loggedInStatus: true };
     case 'logOut':

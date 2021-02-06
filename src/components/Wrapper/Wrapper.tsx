@@ -7,7 +7,7 @@ import Footer from './Footer';
 
 const Body = styled.div`
   background-color: white;
-  
+
   /* PC */
   ${media.gm`
     width: 688px;
@@ -35,14 +35,14 @@ const Wrap = styled.div`
   background-color: #f6f6f4;
 `;
 
-const Wrapper: React.FC = ({children}) => {
-    return (
-        <Wrap>
-            <Header></Header>
-            <Body>{children}</Body>
-            <Footer></Footer>
-        </Wrap>
-    )
-}
+const Wrapper: React.FC = ({ children }) => {
+  return (
+    <Wrap>
+      <Header></Header>
+      <Body>{children}</Body>
+      <Footer></Footer>
+    </Wrap>
+  );
+};
 
 export default Wrapper;

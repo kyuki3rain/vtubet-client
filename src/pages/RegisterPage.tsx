@@ -3,9 +3,9 @@ import Registration from '../components/Registration';
 import Wrapper from '../components/Wrapper/Wrapper';
 
 export default function RegisterPage() {
-    return (
-        <Wrapper>
-            <Registration  />
-        </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <Registration />
+    </Wrapper>
+  );
 }

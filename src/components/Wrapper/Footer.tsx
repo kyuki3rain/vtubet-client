@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import media from '../../helper/media';
-import Text from '../Basic/Text'
+import Text from '../Basic/Text';
 
 const Background = styled.div`
   width: 100%;
@@ -28,15 +28,12 @@ const Footer = () => {
   return (
     <Background>
       <Text variant="body2" color="white">
-        {"Copyright © "}
-        <span onClick={()=>history.push('/')}>
-          Vtubet
-        </span>{" "}
-        {new Date().getFullYear()}
-        {"."}
+        {'Copyright © '}
+        <span onClick={() => history.push('/')}>Vtubet</span> {new Date().getFullYear()}
+        {'.'}
       </Text>
     </Background>
-  )
-}
+  );
+};
 
 export default Footer;

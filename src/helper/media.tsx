@@ -1,9 +1,5 @@
 import media from 'styled-media-query';
-import {
-  ThemedStyledProps,
-  InterpolationValue,
-  FlattenInterpolation,
-} from 'styled-components';
+import { ThemedStyledProps, InterpolationValue, FlattenInterpolation } from 'styled-components';
 
 /**
  * https://github.com/morajabi/styled-media-query/blob/master/src/index.d.ts
@@ -26,7 +22,7 @@ const rules: { [v: string]: GeneratorFunction<unknown, any> } = {
   lm: (...args) => media.lessThan('medium')(...args),
   sm: (...args) => media.between('small', 'medium')(...args),
   gs: (...args) => media.greaterThan('small')(...args),
-  ls: (...args) => media.lessThan('small')(...args)
+  ls: (...args) => media.lessThan('small')(...args),
 };
 
 export default rules;

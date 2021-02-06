@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
@@ -22,124 +22,132 @@ type Props = {
   contest_id: number;
   member_names: Array<string>;
   bet_type: BetType;
-}
+};
 
 const get_chance = (chances: Array<Chance>, selectMemberNames: Array<string>) => {
-  for (const chance of chances){
-    if(chance.has_order){
-      if(selectMemberNames.toString() === chance.member_names.toString()){
+  for (const chance of chances) {
+    if (chance.has_order) {
+      if (selectMemberNames.toString() === chance.member_names.toString()) {
         return chance;
       }
-    }
-    else if(chance.member_names.every((name) => {
-      return selectMemberNames.includes(name)
-    })){
+    } else if (
+      chance.member_names.every((name) => {
+        return selectMemberNames.includes(name);
+      })
+    ) {
       return chance;
     }
   }
   return null;
-}
+};
 
-const ParticipationsSelect: React.FC<Props> = ({contest_id, member_names, bet_type}) => {
+const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_type }) => {
   const length = bet_type_length(bet_type);
   const [point, setPoint] = useState(0);
   const [chances, setChances] = useState([] as Array<Chance>);
-  const [selectMembers, setSelectMembers] = useState(Array.from(new Array(length)).map((v,i) => i));
-  const selectMemberNames = selectMembers.map((s) => { return member_names[s] });
+  const [selectMembers, setSelectMembers] = useState(
+    Array.from(new Array(length)).map((v, i) => i)
+  );
+  const selectMemberNames = selectMembers.map((s) => {
+    return member_names[s];
+  });
   const chance = get_chance(chances, selectMemberNames);
 
   const get_chances = () => {
-    axios.get(api("contests/" + contest_id + "/chances"), {
-    params: {
-      bet_type: bet_type
-    },
-    withCredentials: true })
-    .then(response => {
+    axios
+      .get(api('contests/' + contest_id + '/chances'), {
+        params: {
+          bet_type: bet_type,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
         console.log(response.data);
         setChances(response.data);
-    }).catch(error => console.log("更新失敗", error))
-  }
+      })
+      .catch((error) => console.log('更新失敗', error));
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     get_chances();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  
   const create_bet = (chance: Chance) => {
-    axios.post(api("chances/" + chance.id + "/bets/"), {
-      bet: {
-        point: point
-      }
-    }, { withCredentials: true })
-    .then(response => {
-      get_chances();
-    }).catch(error => console.log("更新失敗", error));
-  }
-  
-  if(!chances){
-    return (
-      <div>
-      </div>
-    )
-  }
+    axios
+      .post(
+        api('chances/' + chance.id + '/bets/'),
+        {
+          bet: {
+            point: point,
+          },
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        get_chances();
+      })
+      .catch((error) => console.log('更新失敗', error));
+  };
 
-  if(length !== 2 && length !== 3){
+  if (!chances) {
     return <div></div>;
   }
 
-  if(!chance){
+  if (length !== 2 && length !== 3) {
+    return <div></div>;
+  }
+
+  if (!chance) {
     return <div></div>;
   }
 
   return (
     <>
       <Wrapper>
-        {
-          new Array(length).fill("").map((_, i) => {
-            const check_duplicate = (index: number): boolean => {
-              let arr = selectMembers.slice();
-              arr.splice(i, 1);
-              console.log(arr);
-              return arr.includes(index);
-            }
+        {new Array(length).fill('').map((_, i) => {
+          const check_duplicate = (index: number): boolean => {
+            let arr = selectMembers.slice();
+            arr.splice(i, 1);
+            console.log(arr);
+            return arr.includes(index);
+          };
 
-            return (
-              <SelectBox
-                key={i}
-                value={selectMembers[i]}
-                member_names={member_names}
-                handleChange={(event) => {
-                  const newMember = event.target.value as number;
-                  if(!check_duplicate(newMember)){
-                    let newMembers = selectMembers.slice();
-                    newMembers[i] = newMember;
-                    setSelectMembers(newMembers);
-                  }
-                }}
-                check_duplicate={check_duplicate}
-              />
-            )
-          })
-        }
+          return (
+            <SelectBox
+              key={i}
+              value={selectMembers[i]}
+              member_names={member_names}
+              handleChange={(event) => {
+                const newMember = event.target.value as number;
+                if (!check_duplicate(newMember)) {
+                  let newMembers = selectMembers.slice();
+                  newMembers[i] = newMember;
+                  setSelectMembers(newMembers);
+                }
+              }}
+              check_duplicate={check_duplicate}
+            />
+          );
+        })}
       </Wrapper>
       <Wrapper>
-        <Text variant="body1">{"倍率：" + (chance.rate || "*")}</Text>
+        <Text variant="body1">{'倍率：' + (chance.rate || '*')}</Text>
         <Counter point={point} setPoint={setPoint}></Counter>
-        <Button 
-            variant="contained"
-            color="primary"
-            disableElevation
-            onClick={() => {
-              create_bet(chance);
-            }}
-            disabled={chance.is_bet}
+        <Button
+          variant="contained"
+          color="primary"
+          disableElevation
+          onClick={() => {
+            create_bet(chance);
+          }}
+          disabled={chance.is_bet}
         >
-            賭ける
+          賭ける
         </Button>
       </Wrapper>
     </>
   );
-}
+};
 
 export default ParticipationsSelect;
