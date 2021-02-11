@@ -1,24 +1,24 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import api from '../../helper/api';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Button from '@material-ui/core/Button';
 
+import api from '../../helper/api';
 import Wrapper from '../../components/Wrapper/Wrapper';
 import Text from '../../components/Basic/Text';
+import styled from 'styled-components';
+import { Contest } from '../ContestPage';
 
-type Member = {
-  name: string;
-};
-
-type Contest = {
-  id: number;
-  title: string;
-  members: Array<Member>;
-};
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+`;
 
 export default function Home() {
   const [contests, setContests] = useState([{} as Contest]);
@@ -26,7 +26,12 @@ export default function Home() {
 
   const get_contests = () => {
     axios
-      .get(api('contests'), { withCredentials: true })
+      .get(api('contests'), {
+        params: {
+          admin: true,
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         setContests(response.data);
       })
@@ -39,9 +44,22 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <Text variant="h4" color="black">
-        コンテスト一覧
-      </Text>
+      <RowContainer>
+        <Text variant="h4" color="black">
+          作成したコンテスト一覧
+        </Text>
+        <Button
+          variant="contained"
+          color="primary"
+          disableElevation
+          onClick={() => {
+            history.push('/admin/contest/0');
+          }}
+          type="submit"
+        >
+          新規作成
+        </Button>
+      </RowContainer>
       <CssBaseline />
       <List>
         {contests.map((contest) => {
@@ -56,7 +74,7 @@ export default function Home() {
                     .join('、') + 'など参加'
                 }
                 onClick={() => {
-                  history.push(`/contest/${contest.id}`);
+                  history.push(`/admin/contest/${contest.id}`);
                 }}
               />
             </ListItem>

@@ -4,13 +4,18 @@ import { useParams } from 'react-router-dom';
 import Wrapper from '../components/Wrapper/Wrapper';
 import Text from '../components/Basic/Text';
 import ContestTab from '../components/ContestPage/ContestTab';
-import { BetType } from '../helper/bet_type';
 import axios from 'axios';
 import api from '../helper/api';
 
 export type Contest = {
+  id: number;
   title: string;
-  member_names: Array<string>;
+  members: Array<Member>;
+};
+
+type Member = {
+  id: number;
+  name: string;
 };
 
 type Params = {
@@ -36,12 +41,21 @@ export default function ContestPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!contest || !contest.members) {
+    return <div></div>;
+  }
+
   return (
     <Wrapper>
       <Text variant="h4" color="black">
         {contest.title}
       </Text>
-      <ContestTab contest_id={Number(id)} member_names={contest.member_names} />
+      <ContestTab
+        contest_id={Number(id)}
+        member_names={contest.members.map((member) => {
+          return member.name;
+        })}
+      />
     </Wrapper>
   );
 }

@@ -9,16 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Wrapper from '../components/Wrapper/Wrapper';
 import Text from '../components/Basic/Text';
-
-type Member = {
-  name: string;
-};
-
-type Contest = {
-  id: number;
-  title: string;
-  members: Array<Member>;
-};
+import { Contest } from './ContestPage';
 
 export default function Home() {
   const [contests, setContests] = useState([{} as Contest]);
