@@ -5,9 +5,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../../helper/api';
 
-type Props = {};
-
-const CreateForm: React.FC<Props> = ({}) => {
+const CreateForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [refund, setRefund] = useState(100);
   const history = useHistory();

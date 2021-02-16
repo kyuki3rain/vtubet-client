@@ -21,7 +21,7 @@ const SelectBox: React.FC<Props> = ({ value, member_names, handleChange, check_d
       }}
     >
       {member_names.map((name, index) => {
-        if (check_duplicate(index)) return;
+        if (check_duplicate(index)) return <></>;
         return (
           <MenuItem value={index} key={index}>
             {name}

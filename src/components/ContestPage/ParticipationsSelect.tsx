@@ -87,6 +87,7 @@ const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_t
 
   useEffect(() => {
     if (chance) get_is_bet(contest_id, chance, setIsBet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chance]);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import api from '../helper/api';
 import Wrapper from '../components/Wrapper/Wrapper';
 import Text from '../components/Basic/Text';
-import { BetType, BET_TYPE, bet_type_index, BET_TYPE_JA } from '../helper/bet_type';
+import { BetType, bet_type_index, BET_TYPE_JA } from '../helper/bet_type';
 
 type Bet = {
   id: number;

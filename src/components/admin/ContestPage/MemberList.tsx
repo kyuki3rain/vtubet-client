@@ -38,8 +38,6 @@ type Props = {
   id: number;
 };
 
-type Rank = { [key: number]: number };
-
 const MemberList: React.FC<Props> = ({ id }) => {
   const [members, setMembers] = useState([] as Array<Member>);
   const [rank, setRank] = useState([] as Array<number>);

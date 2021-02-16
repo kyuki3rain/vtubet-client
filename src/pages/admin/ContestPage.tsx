@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import Wrapper from '../../components/Wrapper/Wrapper';
 import Text from '../../components/Basic/Text';
-import CreateForm from '../../components/admin/ContestPage/CreateForm';
 import { Contest } from '../ContestPage';
 import axios from 'axios';
 import api from '../../helper/api';
