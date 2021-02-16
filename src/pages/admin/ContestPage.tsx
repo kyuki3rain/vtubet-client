@@ -44,15 +44,13 @@ export default function ContestPage() {
   const [open, setOpen] = React.useState(false);
 
   const get_contest = () => {
-    if (id !== '0') {
-      axios
-        .get(api('contests/' + id), { withCredentials: true })
-        .then((response) => {
-          console.log(response.data);
-          setContest(response.data);
-        })
-        .catch((error) => console.log('更新失敗', error));
-    }
+    axios
+      .get(api('contests/' + id), { withCredentials: true })
+      .then((response) => {
+        console.log(response.data);
+        setContest(response.data);
+      })
+      .catch((error) => console.log('更新失敗', error));
   };
 
   const destroy_participation = (participation_id: number) => {
@@ -80,16 +78,8 @@ export default function ContestPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (id === '0') {
-    return (
-      <Wrapper>
-        <CreateForm />
-      </Wrapper>
-    );
-  }
-
   if (!contest || !contest.members) {
-    return <div></div>;
+    return <Wrapper></Wrapper>;
   }
 
   return (

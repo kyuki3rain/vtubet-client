@@ -7,8 +7,9 @@ import { Context } from './context'
 import api from './helper/api'
 
 import GlobalStyle from './helper/baseStyle'
-import AdminRoute from './helper/AdminRoute'
 import ContestPage from './pages/ContestPage'
+import FinishContestPage from "./pages/admin/FinishContestPage"
+import CreateContestPage from "./pages/admin/CreateContestPage"
 import AdminContestPage from "./pages/admin/ContestPage"
 import AdminHome from "./pages/admin/Home"
 import Home from './pages/Home'
@@ -55,6 +56,8 @@ export default function App() {
             <Route exact path={"/contest/:id"} component={ContestPage} />
             <Route exact path={"/mypage"} component={UserPage} />
             <Route exact path={"/admin"} component={AdminHome} />
+            <Route exact path={"/admin/contest/:id/finish"} component={FinishContestPage} />
+            <Route exact path={"/admin/contest/create"} component={CreateContestPage} />
             <Route exact path={"/admin/contest/:id"} component={AdminContestPage} />
           </Switch>
         </BrowserRouter>

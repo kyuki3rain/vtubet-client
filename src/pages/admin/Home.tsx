@@ -38,6 +38,36 @@ export default function Home() {
       .catch((error) => console.log('更新失敗', error));
   };
 
+  const publish_contest = (id: number) => {
+    axios
+      .get(api('contests/' + id + '/publish'), {
+        params: {
+          admin: true,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        get_contests();
+      })
+      .catch((error) => console.log('更新失敗', error));
+  };
+
+  const destroy_contest = (id: number) => {
+    axios
+      .delete(api('contests/' + id), {
+        params: {
+          admin: true,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        get_contests();
+      })
+      .catch((error) => console.log('更新失敗', error));
+  };
+
   useEffect(() => {
     get_contests();
   }, []);
@@ -53,7 +83,7 @@ export default function Home() {
           color="primary"
           disableElevation
           onClick={() => {
-            history.push('/admin/contest/0');
+            history.push('/admin/contest/create');
           }}
           type="submit"
         >
@@ -73,10 +103,57 @@ export default function Home() {
                     .map((t) => t.name)
                     .join('、') + 'など参加'
                 }
-                onClick={() => {
-                  history.push(`/admin/contest/${contest.id}`);
-                }}
               />
+              {contest.status === 'draft' && (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    onClick={() => {
+                      history.push(`/admin/contest/${contest.id}`);
+                    }}
+                    type="submit"
+                  >
+                    編集
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    onClick={() => {
+                      publish_contest(contest.id);
+                    }}
+                    type="submit"
+                  >
+                    公開
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    onClick={() => {
+                      destroy_contest(contest.id);
+                    }}
+                    type="submit"
+                  >
+                    削除
+                  </Button>
+                </>
+              )}
+              {contest.status === 'published' && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  onClick={() => {
+                    history.push(`/admin/contest/${contest.id}/finish`);
+                  }}
+                  type="submit"
+                >
+                  終了する
+                </Button>
+              )}
             </ListItem>
           );
         })}

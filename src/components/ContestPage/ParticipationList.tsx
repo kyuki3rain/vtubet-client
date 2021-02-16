@@ -13,8 +13,34 @@ type Props = {
   bet_type: BetType;
 };
 
+type IsBet = {
+  id: number;
+  is_bet: boolean;
+};
+
+const get_is_bets = (
+  contest_id: number,
+  setIsBets: React.Dispatch<React.SetStateAction<IsBet[]>>,
+  bet_type: BetType
+) => {
+  axios
+    .get(api('contests/' + contest_id + '/chances/is_bets'), {
+      params: {
+        bet_type: bet_type,
+      },
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log(response.data);
+      setIsBets(response.data);
+    })
+    .catch((error) => console.log('更新失敗', error));
+};
+
 const ParticipationList: React.FC<Props> = ({ contest_id, bet_type }) => {
   const [chances, setChances] = useState([] as Array<Chance>);
+  const [time, setTime] = useState('');
+  const [isBets, setIsBets] = useState([] as Array<IsBet>);
 
   const get_chances = () => {
     axios
@@ -25,8 +51,9 @@ const ParticipationList: React.FC<Props> = ({ contest_id, bet_type }) => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        setChances(response.data);
+        setTime(response.data.time);
+        setChances(response.data.chances);
+        get_is_bets(contest_id, setIsBets, bet_type);
       })
       .catch((error) => console.log('更新失敗', error));
   };
@@ -59,8 +86,21 @@ const ParticipationList: React.FC<Props> = ({ contest_id, bet_type }) => {
 
   return (
     <List>
+      <div>更新時間：{time}</div>
       {chances.map((chance) => {
-        return <ParticipationListItem key={chance.id} chance={chance} create_bet={create_bet} />;
+        return (
+          <ParticipationListItem
+            key={chance.id}
+            contest_id={contest_id}
+            chance={chance}
+            create_bet={create_bet}
+            is_bet={
+              !!isBets.find((item) => {
+                return item.id === chance.id;
+              })?.is_bet
+            }
+          />
+        );
       })}
     </List>
   );

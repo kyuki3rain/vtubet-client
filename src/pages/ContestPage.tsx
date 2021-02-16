@@ -10,6 +10,7 @@ import api from '../helper/api';
 export type Contest = {
   id: number;
   title: string;
+  status: string;
   members: Array<Member>;
 };
 

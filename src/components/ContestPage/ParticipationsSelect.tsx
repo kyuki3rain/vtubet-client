@@ -25,6 +25,7 @@ type Props = {
 };
 
 const get_chance = (chances: Array<Chance>, selectMemberNames: Array<string>) => {
+  console.log(selectMemberNames);
   for (const chance of chances) {
     if (chance.has_order) {
       if (selectMemberNames.toString() === chance.member_names.toString()) {
@@ -41,10 +42,26 @@ const get_chance = (chances: Array<Chance>, selectMemberNames: Array<string>) =>
   return null;
 };
 
+const get_is_bet = (
+  contest_id: number,
+  chance: Chance,
+  setIsBet: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  axios
+    .get(api('contests/' + contest_id + '/chances/' + chance.id), { withCredentials: true })
+    .then((response) => {
+      console.log(response.data);
+      setIsBet(response.data.is_bet);
+    })
+    .catch((error) => console.log('更新失敗', error));
+};
+
 const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_type }) => {
   const length = bet_type_length(bet_type);
   const [point, setPoint] = useState(0);
   const [chances, setChances] = useState([] as Array<Chance>);
+  const [isBet, setIsBet] = useState(false);
+  const [time, setTime] = useState('');
   const [selectMembers, setSelectMembers] = useState(
     Array.from(new Array(length)).map((v, i) => i)
   );
@@ -62,11 +79,15 @@ const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_t
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        setChances(response.data);
+        setTime(response.data.time);
+        setChances(response.data.chances);
       })
       .catch((error) => console.log('更新失敗', error));
   };
+
+  useEffect(() => {
+    if (chance) get_is_bet(contest_id, chance, setIsBet);
+  }, [chance]);
 
   useEffect(() => {
     get_chances();
@@ -91,25 +112,25 @@ const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_t
   };
 
   if (!chances) {
-    return <div></div>;
+    return <div>a</div>;
   }
 
   if (length !== 2 && length !== 3) {
-    return <div></div>;
+    return <div>b</div>;
   }
 
   if (!chance) {
-    return <div></div>;
+    return <div>c</div>;
   }
 
   return (
     <>
+      <div>更新時間：{time}</div>
       <Wrapper>
         {new Array(length).fill('').map((_, i) => {
           const check_duplicate = (index: number): boolean => {
             let arr = selectMembers.slice();
             arr.splice(i, 1);
-            console.log(arr);
             return arr.includes(index);
           };
 
@@ -141,7 +162,7 @@ const ParticipationsSelect: React.FC<Props> = ({ contest_id, member_names, bet_t
           onClick={() => {
             create_bet(chance);
           }}
-          disabled={chance.is_bet}
+          disabled={isBet}
         >
           賭ける
         </Button>
