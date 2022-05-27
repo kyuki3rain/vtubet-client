@@ -5,7 +5,7 @@ const api = (path: string) => {
     url = 'http://localhost:3001/'
   }
   else if(process.env.NODE_ENV === 'production') {
-    url = 'https://vtubet.kyuki3rain.com/'
+    url = 'https://vtubet.herokuapp.com/'
   }
 
   return url + path;
